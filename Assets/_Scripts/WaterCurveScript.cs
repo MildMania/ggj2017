@@ -8,13 +8,23 @@ public class WaterCurveScript : MonoBehaviour
     public CurvedWorld_Controller CurveController;
     public float DisplacementXRadius, DisplacementYRadius;
     public float Cooldown;
+    public float MakingLinearDuration;
+
     float _randomYBend, _randomXBias;
-
     float _remTime;
-
+    bool _canCurve;
     Vector3 _startingBend, _newbend, _startingBias, _newbias;
 
     void Awake()
+    {
+        Initialize();
+
+        StopCurving();
+
+        StartListeningEvents();
+    }
+
+    void Initialize()
     {
         _startingBend = CurveController.GetBend();
         _newbend = _startingBend;
@@ -25,8 +35,62 @@ public class WaterCurveScript : MonoBehaviour
         _remTime = Cooldown;
     }
 
+    void StartListeningEvents()
+    {
+        GameManager.OnPostGameStart += StartCurving;
+    }
+
+    void StopListeningEvents()
+    {
+        GameManager.OnGameOver -= StopCurving;
+    }
+
+    void StartCurving()
+    {
+        Initialize();
+
+        _canCurve = true;
+    }
+
+    void StopCurving()
+    {
+        _canCurve = false;
+
+        MakeLineLinear();
+    }
+
+    void MakeLineLinear()
+    {
+        StartCoroutine(MakeLineLinearRoutine());
+    }
+
+    IEnumerator MakeLineLinearRoutine()
+    {
+        _startingBend = CurveController.GetBend();
+        _startingBias = CurveController.GetBias();
+
+        _newbend = Vector3.zero;
+        _newbias = Vector3.zero;
+
+        float passedTime = 0f;
+
+        while (CurveController.GetBend().magnitude != 0 || CurveController.GetBias().magnitude != 0)
+        {
+            Vector3 tempBend = Vector3.LerpUnclamped(_startingBend, _newbend, passedTime / MakingLinearDuration);
+            Vector3 tempBias = Vector3.LerpUnclamped(_startingBias, _newbias, passedTime / MakingLinearDuration);
+
+            CurveController.SetBias(tempBias);
+            CurveController.SetBend(tempBend);
+
+            yield return Utilities.WaitForFixedUpdate;
+        }
+    }
+
     void Update()
     {
+        if (!_canCurve)
+            return;
+
         _remTime -= Time.unscaledDeltaTime;
 
         Vector3 tempBend = Vector3.LerpUnclamped(_startingBend, _newbend, 1 - (_remTime / Cooldown));

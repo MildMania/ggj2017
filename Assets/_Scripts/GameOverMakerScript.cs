@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class GameOverMakerScript : MonoBehaviour
 {
-    void OnTriggerEnter(Collider other)
+    void OnCollisionEnter(Collision collision)
     {
-        if(other.gameObject.layer == 8)
+        if (collision.gameObject.layer == 8)
             GameManager.Instance.GameOver();
     }
 }

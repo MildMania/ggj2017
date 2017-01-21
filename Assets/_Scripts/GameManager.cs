@@ -4,14 +4,15 @@ using UnityEngine;
 public enum GameState
 {
     MainMenu,
-    InGame
+    InGame,
+    GameOver
 }
 
 public class GameManager : MonoBehaviour
 {
     public GameState CurGameState;
 
-    public static Action OnGameInitialize, OnGameOver, OnPreGameStart, OnPostGameStart;
+    public static Action OnGameInitialize, OnGameOver, OnPreGameStart, OnPostGameStart, OnGameClosed;
 
     void FireOnGameInitialized()
     {
@@ -23,6 +24,12 @@ public class GameManager : MonoBehaviour
     {
         if (OnGameOver != null)
             OnGameOver();
+    }
+
+    void FireOnGameClosed()
+    {
+        if (OnGameClosed != null)
+            OnGameClosed();
     }
 
     void FireOnPreGameStart()
@@ -43,11 +50,13 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
 
-        MainMenuController.OnPostMainMenuClosed += FireOnPostGameStart;
+        MainMenuController.OnPostMainMenuClosed += PostStartGame;
     }
 
     void Start()
     {
+        CurGameState = GameState.MainMenu;
+
         FireOnGameInitialized();
     }
 
@@ -56,13 +65,24 @@ public class GameManager : MonoBehaviour
         FireOnPreGameStart();
     }
 
+    public void PostStartGame()
+    {
+        CurGameState = GameState.InGame;
+
+        FireOnPostGameStart();
+    }
+
     public void GameOver()
     {
+        CurGameState = GameState.GameOver;
+
         FireOnGameOver();
     }
 
     void CloseGame()
     {
+        CurGameState = GameState.MainMenu;
 
+        FireOnGameClosed();
     }
 }

@@ -42,7 +42,7 @@ public class MainMenuController : MonoBehaviour
 
         GameManager.OnGameInitialize += OpenMainMenu;
         GameManager.OnPreGameStart += CloseMainMenu;
-        GameManager.OnGameOver += OpenMainMenu;
+        GameManager.OnGameClosed += OpenMainMenu;
 
         PlayButton.onClick.AddListener(OnPlayButtonPressed);
     }

@@ -44,17 +44,23 @@ public class ShipController : MonoBehaviour
     protected void StartListeningEvents()
     {
         GameManager.OnPostGameStart += OnGameStarted;
+        GameManager.OnGameOver += OnGameOver;
     }
 
     protected void FinishListeningEvents()
     {
         GameManager.OnPostGameStart -= OnGameStarted;
+        GameManager.OnGameOver -= OnGameOver;
     }
 
     void OnGameStarted()
     {
-        Debug.Log("on game started");
         StartCheckInputProgress();
+    }
+
+    void OnGameOver()
+    {
+        StopCheckInputProgress();
     }
 
     void StartCheckInputProgress()
@@ -80,10 +86,15 @@ public class ShipController : MonoBehaviour
         }
     }
 
-    private void Update()
+    void Update()
     {
-        LimitZSpeed();
-        LimitZRot();
+        if (GameManager.Instance.CurGameState == GameState.InGame || GameManager.Instance.CurGameState == GameState.MainMenu)
+        {
+            LimitZSpeed();
+            LimitZRot();
+        }
+        else
+            StopMoving();
     }
 
     void CheckInput()
@@ -119,7 +130,11 @@ public class ShipController : MonoBehaviour
             vel.z = MaxZSpeed;
 
         Rigidbody.velocity = vel;
+    }
 
+    void StopMoving()
+    {
+        Rigidbody.velocity = Vector3.zero;
     }
 
     void LimitZRot()

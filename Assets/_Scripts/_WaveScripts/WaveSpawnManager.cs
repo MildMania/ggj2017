@@ -17,16 +17,23 @@ public class WaveSpawnManager : SpawnableManagerBase
     protected override void StartListeningEvents()
     {
         GameManager.OnPostGameStart += OnGameStarted;
+        GameManager.OnGameOver += OnGameOver;
     }
 
     protected override void FinishListeningEvents()
     {
         GameManager.OnPostGameStart -= OnGameStarted;
+        GameManager.OnGameOver -= OnGameOver;
     }
 
     void OnGameStarted()
     {
         StartCheckInputProgress();
+    }
+
+    void OnGameOver()
+    {
+        StopCheckInputProgress();
     }
 
     void StartCheckInputProgress()
