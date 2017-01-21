@@ -25,19 +25,62 @@ public class ShipController : MonoBehaviour
     public float PushForce;
     Vector3 _pushForceDirection = new Vector3(1, 0, 0);
 
+    IEnumerator _checkInputRoutine;
+
     private void Awake()
     {
         _instance = this;
+
+        StartListeningEvents();
     }
 
     private void OnDestroy()
     {
         _instance = null;
+
+        FinishListeningEvents();
+    }
+
+    protected void StartListeningEvents()
+    {
+        GameManager.OnPostGameStart += OnGameStarted;
+    }
+
+    protected void FinishListeningEvents()
+    {
+        GameManager.OnPostGameStart -= OnGameStarted;
+    }
+
+    void OnGameStarted()
+    {
+        StartCheckInputProgress();
+    }
+
+    void StartCheckInputProgress()
+    {
+        StopCheckInputProgress();
+
+        _checkInputRoutine = CheckInputProgress();
+        StartCoroutine(_checkInputRoutine);
+    }
+
+    void StopCheckInputProgress()
+    {
+        if (_checkInputRoutine != null)
+            StopCoroutine(_checkInputRoutine);
+    }
+
+    IEnumerator CheckInputProgress()
+    {
+        while (true)
+        {
+            CheckInput();
+            yield return Utilities.WaitForEndOfFrame;
+        }
     }
 
     private void Update()
     {
-        CheckInput();
         LimitZSpeed();
         LimitZRot();
     }

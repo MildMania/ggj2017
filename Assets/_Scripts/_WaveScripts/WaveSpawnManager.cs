@@ -10,11 +10,46 @@ public class WaveSpawnManager : SpawnableManagerBase
 
     public float ZIntervalFromShip;
 
+    IEnumerator _checkInputRoutine;
+
     DirectionEnum _waveDirection;
 
-    private void Update()
+    protected override void StartListeningEvents()
     {
-        CheckInput();
+        GameManager.OnPostGameStart += OnGameStarted;
+    }
+
+    protected override void FinishListeningEvents()
+    {
+        GameManager.OnPostGameStart -= OnGameStarted;
+    }
+
+    void OnGameStarted()
+    {
+        StartCheckInputProgress();
+    }
+
+    void StartCheckInputProgress()
+    {
+        StopCheckInputProgress();
+
+        _checkInputRoutine = CheckInputProgress();
+        StartCoroutine(_checkInputRoutine);
+    }
+
+    void StopCheckInputProgress()
+    {
+        if (_checkInputRoutine != null)
+            StopCoroutine(_checkInputRoutine);
+    }
+
+    IEnumerator CheckInputProgress()
+    {
+        while(true)
+        {
+            CheckInput();
+            yield return Utilities.WaitForEndOfFrame;
+        }
     }
 
     void CheckInput()
