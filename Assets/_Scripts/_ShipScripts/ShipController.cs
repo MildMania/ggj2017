@@ -15,6 +15,9 @@ public class ShipController : MonoBehaviour
     public static ShipController Instance { get { return _instance; } }
 
     public Rigidbody Rigidbody;
+    public float MaxZSpeed;
+
+    public float MaxZRot;
 
     public Transform LeftAnchor;
     public Transform RightAnchor;
@@ -35,7 +38,8 @@ public class ShipController : MonoBehaviour
     private void Update()
     {
         CheckInput();
-        UpdateRotation();
+        LimitZSpeed();
+        LimitZRot();
     }
 
     void CheckInput()
@@ -62,12 +66,31 @@ public class ShipController : MonoBehaviour
 
         Rigidbody.AddForceAtPosition(_pushForceDirection * PushForce, targetTR.position, ForceMode.Acceleration);
     }
-
-    void UpdateRotation()
+    
+    void LimitZSpeed()
     {
-        Vector3 eulerAngles = transform.localEulerAngles;
-        eulerAngles.x = 0.0f;
+        Vector3 vel = Rigidbody.velocity;
 
-        transform.localEulerAngles = eulerAngles;
+        if (vel.z > MaxZSpeed)
+            vel.z = MaxZSpeed;
+
+        Rigidbody.velocity = vel;
+
+    }
+
+    void LimitZRot()
+    {
+        Vector3 rot = transform.localEulerAngles;
+
+        if (rot.z > MaxZRot 
+            && rot.z < 180)
+            rot.z = MaxZRot;
+        else if (rot.z > 180
+            && rot.z < 360 - MaxZRot)
+            rot.z = 360 - MaxZRot;
+        else if (rot.z < -MaxZRot)
+            rot.z = -MaxZRot;
+
+        transform.localEulerAngles = rot;
     }
 }

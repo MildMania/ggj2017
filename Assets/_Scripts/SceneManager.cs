@@ -7,6 +7,8 @@ public class SceneManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
+
+        Utilities.Initialize();
     }
 
     public void PlayPressed()
