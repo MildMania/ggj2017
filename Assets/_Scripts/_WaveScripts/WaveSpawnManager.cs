@@ -48,7 +48,7 @@ public class WaveSpawnManager : SpawnableManagerBase
         while(true)
         {
             CheckInput();
-            yield return Utilities.WaitForEndOfFrame;
+            yield return null;
         }
     }
 

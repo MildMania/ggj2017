@@ -53,6 +53,7 @@ public class ShipController : MonoBehaviour
 
     void OnGameStarted()
     {
+        Debug.Log("on game started");
         StartCheckInputProgress();
     }
 
@@ -75,7 +76,7 @@ public class ShipController : MonoBehaviour
         while (true)
         {
             CheckInput();
-            yield return Utilities.WaitForEndOfFrame;
+            yield return null;
         }
     }
 
