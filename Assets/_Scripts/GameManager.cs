@@ -42,6 +42,8 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
+
+        MainMenuController.OnPostMainMenuClosed += FireOnPostGameStart;
     }
 
     void Start()
