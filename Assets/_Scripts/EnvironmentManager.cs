@@ -23,10 +23,10 @@ public class EnvironmentManager : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(FillArea());
+        FillArea();
     }
 
-    IEnumerator FillArea()
+    void FillArea()
     {
         if(StartingObj != null)
             _spawnedEnvs.Add(StartingObj);
@@ -34,11 +34,7 @@ public class EnvironmentManager : MonoBehaviour
             SpawnAt(new Vector3(0f, 0f, 0f));
 
         while (_spawnedEnvs[_spawnedEnvs.Count - 1].EndTransform.position.z < MaxFillPoint.position.z)
-        {
-            SpawnAt(StartingObj.EndTransform.position);
-
-            yield return null;
-        }
+            SpawnAt(_spawnedEnvs[_spawnedEnvs.Count - 1].EndTransform.position);
     }
 
     void SpawnAt(Vector3 point)

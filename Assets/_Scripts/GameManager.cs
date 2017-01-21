@@ -10,7 +10,6 @@ public enum GameState
 public class GameManager : MonoBehaviour
 {
     public GameState CurGameState;
-    public Transform Ship;
 
     public static Action OnGameInitialize, OnGameOver, OnPreGameStart, OnPostGameStart;
 
@@ -48,14 +47,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         FireOnGameInitialized();
-    }
-
-    void Update()
-    {
-        if(Input.GetKey(KeyCode.W))
-        {
-            Ship.transform.position += new Vector3(0f, 0f, 2f);
-        }
     }
 
     public void StartGame()
