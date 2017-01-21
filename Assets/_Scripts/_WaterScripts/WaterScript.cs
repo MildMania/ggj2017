@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class WaterScript : MonoBehaviour
 {
+    static WaterScript _instance;
+
+    public static WaterScript Instance { get { return _instance; } }
+
+    public Transform LeftBound, RightBound;
+
+    float _totalRiverWidth;
+
     public Rigidbody ShipRigidbody;
 
     public float FlowForce;
@@ -19,7 +27,16 @@ public class WaterScript : MonoBehaviour
 
     private void Awake()
     {
+        _instance = this;
+
+        InitTotalWidth();
+
         StartFlowProgress();
+    }
+
+    void InitTotalWidth()
+    {
+        _totalRiverWidth = RightBound.position.x - LeftBound.position.x;
     }
 
     void StartFlowProgress()
@@ -60,5 +77,12 @@ public class WaterScript : MonoBehaviour
 
         ShipRigidbody.AddTorque(_resistanceTorqueDir * ResistanceTorque);
 
+    }
+
+    public float GetShipWidthPerc()
+    {
+        float perc = (ShipRigidbody.transform.position.x - LeftBound.position.x) / _totalRiverWidth;
+
+        return perc;
     }
 }

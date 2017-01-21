@@ -12,6 +12,8 @@ public abstract class SpawnableBase : MonoBehaviour
 
     IEnumerator _checkAutoDeactivateRoutine;
 
+    const float DEACTIVATE_Z_INTERVAL = 50.0f;
+
     public virtual void InitSpawnable(SpawnableManagerBase parentManager)
     {
         _parentManager = parentManager;
@@ -28,6 +30,30 @@ public abstract class SpawnableBase : MonoBehaviour
         SetRendererActive(true);
 
         gameObject.SetActive(true);
+
+        StartCheckAutoDeactivateProgress();
+    }
+
+    void StartCheckAutoDeactivateProgress()
+    {
+        StopCheckAutoDeactivateProgress();
+
+        _checkAutoDeactivateRoutine = CheckAutoDeactivate();
+        StartCoroutine(_checkAutoDeactivateRoutine);
+    }
+
+    void StopCheckAutoDeactivateProgress()
+    {
+        if (_checkAutoDeactivateRoutine != null)
+            StopCoroutine(_checkAutoDeactivateRoutine);
+    }
+
+    protected virtual IEnumerator CheckAutoDeactivate()
+    {
+        while (transform.position.z > ShipController.Instance.transform.position.z - DEACTIVATE_Z_INTERVAL)
+            yield return null;
+
+        Deactivate();
     }
 
     public virtual void Deactivate()
@@ -41,6 +67,7 @@ public abstract class SpawnableBase : MonoBehaviour
 
     protected void SetRendererActive(bool isActive)
     {
-        Renderer.enabled = isActive;
+        if(Renderer != null)
+            Renderer.enabled = isActive;
     }
 }

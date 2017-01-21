@@ -5,12 +5,15 @@ using UnityEngine;
 public class SpawnableWave : SpawnableBase
 {
     public Rigidbody Rigidbody;
-    public float WaveForce;
 
-    IEnumerator _attackShipRoutine;
+    DirectionEnum _waveDirection;
+    float _speed;
 
     public override void Activate(Vector3 spawnPos, params object[] list)
     {
+        _waveDirection = (DirectionEnum)list[0];
+        _speed = (float)list[1];
+
         base.Activate(spawnPos, list);
 
         ResetRigidbody();
@@ -25,30 +28,12 @@ public class SpawnableWave : SpawnableBase
 
     void StartAttackProgress()
     {
-        StopAttackProgress();
-
-        _attackShipRoutine = AttackProgress();
-        StartCoroutine(_attackShipRoutine);
-    }
-
-    void StopAttackProgress()
-    {
-        if (_attackShipRoutine != null)
-            StopCoroutine(_attackShipRoutine);
-    }
-
-    IEnumerator AttackProgress()
-    {
         Vector3 moveDirection = new Vector3(1, 0, 0);
 
-        if (transform.position.x > 0)
+        if (_waveDirection == DirectionEnum.Left)
             moveDirection.x = -1.0f;
 
-        while (true)
-        {
-            Rigidbody.AddForce(moveDirection * WaveForce);
-            yield return new WaitForFixedUpdate();
-        }
+        Rigidbody.velocity = moveDirection * _speed;
     }
 
     private void OnCollisionEnter(Collision collision)

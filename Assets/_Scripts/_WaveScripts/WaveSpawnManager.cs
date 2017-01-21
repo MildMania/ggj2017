@@ -6,6 +6,8 @@ public class WaveSpawnManager : SpawnableManagerBase
 {
     public Transform LeftWavePH, RightWavePH;
 
+    public float WaveSpeed;
+
     public float ZIntervalFromShip;
 
     DirectionEnum _waveDirection;
@@ -28,19 +30,29 @@ public class WaveSpawnManager : SpawnableManagerBase
     {
         _waveDirection = direction;
 
-        SpawnSpawnable(GetSpawnPos());
+        SpawnSpawnable(GetSpawnPos(), _waveDirection, WaveSpeed);
     }
 
-   protected override Vector3 GetSpawnPos()
+    protected override Vector3 GetSpawnPos()
     {
         Vector3 spawnPos = Vector3.zero;
 
         if (_waveDirection == DirectionEnum.Left)
-            spawnPos.x = LeftWavePH.position.x;
-        else
             spawnPos.x = RightWavePH.position.x;
+        else
+            spawnPos.x = LeftWavePH.position.x;
+        spawnPos.y = transform.position.y;
 
-        spawnPos.z = ShipController.Instance.transform.position.z + ZIntervalFromShip;
+        float shipPercInRiver = WaterScript.Instance.GetShipWidthPerc();
+
+        float curZInterval = ZIntervalFromShip;
+
+        if (_waveDirection == DirectionEnum.Right)
+            curZInterval *= shipPercInRiver;
+        else
+            curZInterval *= (1.0f - shipPercInRiver);
+
+        spawnPos.z = ShipController.Instance.transform.position.z + curZInterval;
 
         return spawnPos;
 
