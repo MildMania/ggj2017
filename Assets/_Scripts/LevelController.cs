@@ -8,6 +8,8 @@ public class LevelController : MonoBehaviour
 
     public float RemLevelDuration { get; private set; }
 
+    public float LevelProgressPerc { get; private set; }
+
     IEnumerator _levelRoutine;
 
     private void Awake()
@@ -62,10 +64,17 @@ public class LevelController : MonoBehaviour
         {
             RemLevelDuration -= Time.fixedDeltaTime;
 
+            UpdateLevelProgres();
+
             yield return Utilities.WaitForFixedUpdate;
         }
 
         LevelCompleted();
+    }
+
+    void UpdateLevelProgres()
+    {
+        LevelProgressPerc = RemLevelDuration / LevelDuration;
     }
 
     void LevelCompleted()
