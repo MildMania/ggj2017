@@ -18,12 +18,14 @@ public class WaveSpawnManager : SpawnableManagerBase
     {
         GameManager.OnPostGameStart += OnGameStarted;
         GameManager.OnGameOver += OnGameOver;
+        GameManager.OnLevelCompleted += OnGameOver;
     }
 
     protected override void FinishListeningEvents()
     {
         GameManager.OnPostGameStart -= OnGameStarted;
         GameManager.OnGameOver -= OnGameOver;
+        GameManager.OnLevelCompleted -= OnGameOver;
     }
 
     void OnGameStarted()
