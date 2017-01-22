@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 3a8157eee4689e74c925903aa172f2bd
-timeCreated: 1485041800
+guid: c2514cc15b480f344aa8aed4515a4179
+timeCreated: 1485080833
 licenseType: Pro
 ModelImporter:
   serializedVersion: 19
@@ -9,7 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Rock2_001
+    4300000: Rock_4
     7400000: Default Take
     9500000: //RootNode
   materials:
@@ -43,16 +43,16 @@ ModelImporter:
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
+    optimizeMeshForGPU: 0
     keepQuads: 0
     weldVertices: 1
     secondaryUVAngleDistortion: 8
-    secondaryUVAreaDistortion: 15.000001
-    secondaryUVHardAngle: 88
+    secondaryUVAreaDistortion: 15
+    secondaryUVHardAngle: 23
     secondaryUVPackMargin: 4
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
+    normalSmoothAngle: 0
     normalImportMode: 0
     tangentImportMode: 3
   importAnimation: 1
