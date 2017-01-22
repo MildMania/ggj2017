@@ -26,6 +26,8 @@ public class WaterCurveScript : MonoBehaviour
 
     void Initialize()
     {
+        StopCoroutine(MakeLineLinearRoutine());
+
         _startingBend = CurveController.GetBend();
         _newbend = _startingBend;
 
@@ -38,10 +40,12 @@ public class WaterCurveScript : MonoBehaviour
     void StartListeningEvents()
     {
         GameManager.OnPostGameStart += StartCurving;
+        GameManager.OnGameOver += StopCurving;
     }
 
     void StopListeningEvents()
     {
+        GameManager.OnPostGameStart -= StartCurving;
         GameManager.OnGameOver -= StopCurving;
     }
 
@@ -69,12 +73,12 @@ public class WaterCurveScript : MonoBehaviour
         _startingBend = CurveController.GetBend();
         _startingBias = CurveController.GetBias();
 
-        _newbend = Vector3.zero;
-        _newbias = Vector3.zero;
+        _newbend = new Vector3(-0.18f, 0f);
+        _newbias = new Vector3(345f, 0f);
 
         float passedTime = 0f;
 
-        while (CurveController.GetBend().magnitude != 0 || CurveController.GetBias().magnitude != 0)
+        while (_canCurve && (CurveController.GetBend().magnitude != 0 || CurveController.GetBias().magnitude != 0))
         {
             Vector3 tempBend = Vector3.LerpUnclamped(_startingBend, _newbend, passedTime / MakingLinearDuration);
             Vector3 tempBias = Vector3.LerpUnclamped(_startingBias, _newbias, passedTime / MakingLinearDuration);
@@ -83,6 +87,8 @@ public class WaterCurveScript : MonoBehaviour
             CurveController.SetBend(tempBend);
 
             yield return Utilities.WaitForFixedUpdate;
+
+            passedTime += Time.unscaledDeltaTime;
         }
     }
 
@@ -116,10 +122,10 @@ public class WaterCurveScript : MonoBehaviour
 
         SetRandomValues();
 
-        _newbend = new Vector3(CurveController._V_CW_Bend_X, CurveController._V_CW_Bend_Y + _randomYBend);
+        _newbend = new Vector3(CurveController._V_CW_Bend_X, _randomYBend);
         _startingBend = CurveController.GetBend();
 
-        _newbias = new Vector3(CurveController._V_CW_Bias_X + _randomXBias, CurveController._V_CW_Bias_Y);
+        _newbias = new Vector3(_randomXBias, CurveController._V_CW_Bias_Y);
         _startingBias = CurveController.GetBias();
     }
 
