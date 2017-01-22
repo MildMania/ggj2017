@@ -36,7 +36,7 @@ public class WaveEffectScript : MonoBehaviour
                     break;
             }
 
-            renderer.transform.DOLocalMoveX(renderer.transform.localPosition.x + ((int)dir * MoveAmount), Duration).SetLoops(-1, LoopType.Yoyo);
+            renderer.transform.DOLocalMoveZ(renderer.transform.localPosition.z + ((int)dir * MoveAmount), Duration).SetLoops(-1, LoopType.Yoyo);
         }
     }
 }

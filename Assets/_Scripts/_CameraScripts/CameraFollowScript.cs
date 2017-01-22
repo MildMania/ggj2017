@@ -10,12 +10,49 @@ public class CameraFollowScript : MonoBehaviour
 
     Vector3 _currentVelocity;
 
+    IEnumerator _followRoutine;
+
     public void Awake()
     {
-        StartCoroutine(StartFollow());
+        StartListeningEvents();
+        StartFollowProgress();
     }
 
-    IEnumerator StartFollow()
+    private void OnDestroy()
+    {
+        FinishListeningEvents();
+    }
+
+    void StartListeningEvents()
+    {
+        GameManager.OnGameOver += OnGameOver;
+    }
+
+    void FinishListeningEvents()
+    {
+        GameManager.OnGameOver -= OnGameOver;
+    }
+
+    void OnGameOver()
+    {
+        StopFollowProgress();
+    }
+
+    void StartFollowProgress()
+    {
+        StopFollowProgress();
+
+        _followRoutine = FollowProgress();
+        StartCoroutine(_followRoutine);
+    }
+
+    void StopFollowProgress()
+    {
+        if (_followRoutine != null)
+            StopCoroutine(_followRoutine);
+    }
+
+    IEnumerator FollowProgress()
     {
         while(true)
         {
