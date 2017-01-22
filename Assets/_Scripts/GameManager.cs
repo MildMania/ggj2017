@@ -5,14 +5,16 @@ public enum GameState
 {
     MainMenu,
     InGame,
-    GameOver
+    GameOver,
+    LevelCompleted,
 }
 
 public class GameManager : MonoBehaviour
 {
     public GameState CurGameState;
 
-    public static Action OnGameInitialize, OnGameOver, OnPreGameStart, OnPostGameStart, OnGameClosed;
+    #region Events
+    public static Action OnGameInitialize, OnGameOver, OnPreGameStart, OnPostGameStart, OnGameClosed, OnLevelCompleted;
 
     void FireOnGameInitialized()
     {
@@ -24,6 +26,12 @@ public class GameManager : MonoBehaviour
     {
         if (OnGameOver != null)
             OnGameOver();
+    }
+
+    void FireOnLevelCompleted()
+    {
+        if (OnLevelCompleted != null)
+            OnLevelCompleted();
     }
 
     void FireOnGameClosed()
@@ -43,6 +51,7 @@ public class GameManager : MonoBehaviour
         if (OnPostGameStart != null)
             OnPostGameStart();
     }
+    #endregion
 
     public static GameManager Instance { get; private set; }
 
@@ -79,7 +88,14 @@ public class GameManager : MonoBehaviour
         FireOnGameOver();
     }
 
-    public void CloseGame()
+    public void LevelCompleted()
+    {
+        CurGameState = GameState.LevelCompleted;
+
+        FireOnLevelCompleted();
+    }
+
+    void CloseGame()
     {
         CurGameState = GameState.MainMenu;
 

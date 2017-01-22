@@ -61,12 +61,14 @@ public class ShipController : MonoBehaviour
     {
         GameManager.OnPostGameStart += OnGameStarted;
         GameManager.OnGameOver += OnGameOver;
+        GameManager.OnLevelCompleted += OnLevelCompleted;
     }
 
     protected void FinishListeningEvents()
     {
         GameManager.OnPostGameStart -= OnGameStarted;
         GameManager.OnGameOver -= OnGameOver;
+        GameManager.OnLevelCompleted -= OnLevelCompleted;
     }
 
     void OnGameStarted()
@@ -79,6 +81,11 @@ public class ShipController : MonoBehaviour
         StopCheckInputProgress();
 
         Sink();
+    }
+
+    void OnLevelCompleted()
+    {
+        StopCheckInputProgress();
     }
 
     void StartCheckInputProgress()
