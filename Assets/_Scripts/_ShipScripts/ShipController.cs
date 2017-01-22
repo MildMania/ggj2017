@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Spine.Unity;
+using DG.Tweening;
 
 
 public enum DirectionEnum
@@ -29,6 +30,9 @@ public class ShipController : MonoBehaviour
 
     public float PushForce;
     Vector3 _pushForceDirection = new Vector3(1, 0, 0);
+
+    public float SinkDuration;
+    public float SinkAmount;
 
     IEnumerator _checkInputRoutine;
 
@@ -70,6 +74,8 @@ public class ShipController : MonoBehaviour
     void OnGameOver()
     {
         StopCheckInputProgress();
+
+        Sink();
     }
 
     void StartCheckInputProgress()
@@ -176,5 +182,13 @@ public class ShipController : MonoBehaviour
             DummyRight.state.SetAnimation(0, PULL_LEFT_ANIM_NAME, false);
             DummyRight.state.AddAnimation(0, IDLE_ANIM_NAME, true, 0);
         }
+    }
+
+    void Sink()
+    {
+        float newY = transform.position.y;
+        newY -= SinkAmount;
+
+        transform.DOMoveY(newY, SinkDuration).SetEase(Ease.InSine);
     }
 }

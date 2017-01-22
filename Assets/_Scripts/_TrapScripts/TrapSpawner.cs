@@ -9,7 +9,7 @@ public class TrapSpawner : SpawnableManagerBase
 
     public Transform LeftTrapBound, RightTrapBound;
 
-    private void Update()
+    /*private void Update()
     {
         CheckInput();
     }
@@ -19,6 +19,32 @@ public class TrapSpawner : SpawnableManagerBase
         if (Input.GetKeyDown(KeyCode.Space))
             SpawnSpawnable();
 
+    }*/
+
+    protected override void StartListeningEvents()
+    {
+        base.StartListeningEvents();
+
+        GameManager.OnPostGameStart += OnGameStarted;
+        GameManager.OnGameOver += OnGameEnded;
+    }
+
+    protected override void FinishListeningEvents()
+    {
+        base.FinishListeningEvents();
+
+        GameManager.OnPostGameStart -= OnGameStarted;
+        GameManager.OnGameOver -= OnGameEnded;
+    }
+
+    void OnGameStarted()
+    {
+        StartSpawnProgress();
+    }
+
+    void OnGameEnded()
+    {
+        StopSpawnProgress();
     }
 
     protected override Vector3 GetSpawnPos()

@@ -67,6 +67,40 @@ public abstract class SpawnableManagerBase : MonoBehaviour
             }
     }
 
+    public void StartSpawnProgress()
+    {
+        StopSpawnProgress();
+
+        _spawnRoutine = SpawnProgress();
+        StartCoroutine(_spawnRoutine);
+    }
+
+    public void StopSpawnProgress()
+    {
+        if (_spawnRoutine != null)
+            StopCoroutine(_spawnRoutine);
+    }
+
+    protected virtual IEnumerator SpawnProgress()
+    {
+        _canSpawnSpawnable = true;
+
+        while (_canSpawnSpawnable)
+        {
+            SpawnableBase newSpawnable = null;
+
+            do
+            {
+                newSpawnable = SpawnSpawnable();
+                yield return Utilities.WaitForEndOfFrame;
+            } while (newSpawnable == null);
+
+            float spawnInterval = Utilities.NextFloat(MinSpawnInterval, MaxSpawnInterval);
+
+            yield return new WaitForSeconds(spawnInterval);
+        }
+    }
+
     public virtual SpawnableBase SpawnSpawnable(params object[] list)
     {
         list = GetSpawnParameters(list);
