@@ -16,8 +16,17 @@ public class SpawnableWave : SpawnableBase
 
         base.Activate(spawnPos, list);
 
+        SetLocalScale();
         ResetRigidbody();
         StartAttackProgress();
+    }
+
+    void SetLocalScale()
+    {
+        if (_waveDirection == DirectionEnum.Right)
+            transform.localScale = new Vector3(-30, 30, 30);
+        else
+            transform.localScale = new Vector3(30, 30, 30);
     }
 
     void ResetRigidbody()
