@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 7eaff205517db634fb6e7092a567e1bc
-timeCreated: 1428774846
+guid: 9856250eca944aa4a8c0b138f35951a2
+timeCreated: 1432888792
 licenseType: Store
 PluginImporter:
   serializedVersion: 1
@@ -9,10 +9,10 @@ PluginImporter:
   isPreloaded: 0
   platformData:
     Any:
-      enabled: 1
+      enabled: 0
       settings: {}
     Editor:
-      enabled: 0
+      enabled: 1
       settings:
         DefaultValueInitialized: true
   userData: 
