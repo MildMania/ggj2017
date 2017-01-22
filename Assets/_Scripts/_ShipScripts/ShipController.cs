@@ -20,6 +20,9 @@ public class ShipController : MonoBehaviour
     public SkeletonAnimation DummyLeft;
     public SkeletonAnimation DummyRight;
 
+    public AudioSource LeftDummyAudio;
+    public AudioSource RightDummyAudio;
+
     public Rigidbody Rigidbody;
     public float MaxZSpeed;
 
@@ -176,11 +179,15 @@ public class ShipController : MonoBehaviour
         {
             DummyLeft.state.SetAnimation(0, PULL_LEFT_ANIM_NAME, false);
             DummyLeft.state.AddAnimation(0, IDLE_ANIM_NAME, true,0);
+
+            LeftDummyAudio.Play();
         }
         else
         {
             DummyRight.state.SetAnimation(0, PULL_LEFT_ANIM_NAME, false);
             DummyRight.state.AddAnimation(0, IDLE_ANIM_NAME, true, 0);
+
+            RightDummyAudio.Play();
         }
     }
 
