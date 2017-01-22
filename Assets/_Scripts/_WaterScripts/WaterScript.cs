@@ -31,7 +31,29 @@ public class WaterScript : MonoBehaviour
 
         InitTotalWidth();
 
+        StartListeningEvents();
+
         StartFlowProgress();
+    }
+
+    private void OnDestroy()
+    {
+        FinishListeningEvents();
+    }
+
+    void StartListeningEvents()
+    {
+        GameManager.OnGameOver += OnGameEnded;
+    }
+
+    void FinishListeningEvents()
+    {
+        GameManager.OnGameOver -= OnGameEnded;
+    }
+
+    void OnGameEnded()
+    {
+        StopFlowProgress();
     }
 
     void InitTotalWidth()
@@ -41,8 +63,16 @@ public class WaterScript : MonoBehaviour
 
     void StartFlowProgress()
     {
+        StopFlowProgress();
+
         _flowRoutine = FlowProgress();
         StartCoroutine(_flowRoutine);
+    }
+
+    void StopFlowProgress()
+    {
+        if (_flowRoutine != null)
+            StopCoroutine(_flowRoutine);
     }
 
     IEnumerator FlowProgress()
