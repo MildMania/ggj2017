@@ -51,5 +51,20 @@ public class EnvironmentManager : MonoBehaviour
     {
         if (_spawnedEnvs[_spawnedEnvs.Count - 1].EndTransform.position.z < MaxFillPoint.position.z)
             SpawnAt(_spawnedEnvs[_spawnedEnvs.Count - 1].EndTransform.position);
+
+        if(_spawnedEnvs.Count > 4)
+        {
+            int countToRemove = _spawnedEnvs.Count - 4;
+
+            for (int i = 0; i < countToRemove; i++)
+                DeSpawn(_spawnedEnvs[0]);
+        }
+    }
+
+    void DeSpawn(EnvObjScript env)
+    {
+        _spawnedEnvs.Remove(env);
+
+        GameObject.Destroy(env.gameObject);
     }
 }
