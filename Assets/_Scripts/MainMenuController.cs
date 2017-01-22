@@ -7,7 +7,7 @@ public class MainMenuController : MonoBehaviour
     public static Action OnPostMainMenuClosed, OnPreMainMenuClosed, OnPostMainMenuOpened, OnPreMainMenuOpened;
 
     public MMTweenAlpha UIFadeTween;
-
+    public GameObject MainMenuUI;
     public Button PlayButton;
 
     public static MainMenuController Instance { get; private set; }
@@ -40,11 +40,30 @@ public class MainMenuController : MonoBehaviour
     {
         Instance = this;
 
+        PlayButton.onClick.AddListener(OnPlayButtonPressed);
+
+        MainMenuUI.gameObject.SetActive(true);
+
+        StartListeningEvents();
+    }
+
+    void OnDestroy()
+    {
+        StopListeningEvents();
+    }
+
+    void StartListeningEvents()
+    {
         GameManager.OnGameInitialize += OpenMainMenu;
         GameManager.OnPreGameStart += CloseMainMenu;
         GameManager.OnGameClosed += OpenMainMenu;
+    }
 
-        PlayButton.onClick.AddListener(OnPlayButtonPressed);
+    void StopListeningEvents()
+    {
+        GameManager.OnGameInitialize -= OpenMainMenu;
+        GameManager.OnPreGameStart -= CloseMainMenu;
+        GameManager.OnGameClosed -= OpenMainMenu;
     }
 
     void OnPlayButtonPressed()
@@ -56,9 +75,9 @@ public class MainMenuController : MonoBehaviour
     {
         FireOnPreMainMenuOpened();
 
-        UIFadeTween.gameObject.SetActive(true);
-
+        MainMenuUI.gameObject.SetActive(true);
         PlayButton.gameObject.SetActive(true);
+
         FireOnPostMainMenuOpened();
         //CameraEffects.OnBlurOpened += OnBlurOpened;
         //CameraEffects.Instance.OpenBlur();
@@ -68,16 +87,15 @@ public class MainMenuController : MonoBehaviour
 
     void CloseMainMenu()
     {
-        PlayButton.gameObject.SetActive(false);
-
         FireOnPreMainMenuClosed();
 
         //UIFadeTween.gameObject.SetActive(false);
         FireOnPostMainMenuClosed();
-        //CameraEffects.OnBlurClosed += OnBlurClosed;
-        //CameraEffects.Instance.CloseBlur();
 
-        UIFadeTween.AddOnFinish(() => UIFadeTween.gameObject.SetActive(false), false).PlayReverse();
+        PlayButton.gameObject.SetActive(false);
+
+        if (MainMenuUI.gameObject.activeSelf)
+            UIFadeTween.AddOnFinish(() => MainMenuUI.gameObject.SetActive(false), false).PlayReverse();
     }
 
     //void OnBlurOpened()

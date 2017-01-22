@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour
         FireOnGameOver();
     }
 
-    void CloseGame()
+    public void CloseGame()
     {
         CurGameState = GameState.MainMenu;
 

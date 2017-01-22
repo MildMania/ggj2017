@@ -24,6 +24,11 @@ public class WaterCurveScript : MonoBehaviour
         StartListeningEvents();
     }
 
+    void OnDestroy()
+    {
+        StopListeningEvents();
+    }
+
     void Initialize()
     {
         StopCoroutine(MakeLineLinearRoutine());
