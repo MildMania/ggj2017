@@ -1,14 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class SpawnableWave : SpawnableBase
 {
     public Rigidbody Rigidbody;
 
+    public MMParticleScript SplashParticle;
+
     DirectionEnum _waveDirection;
     float _speed;
-
     public override void Activate(Vector3 spawnPos, params object[] list)
     {
         _waveDirection = (DirectionEnum)list[0];
@@ -48,7 +50,14 @@ public class SpawnableWave : SpawnableBase
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.layer == (int)LayerEnum.Ship)
-            Deactivate();
+            CollidedWithShip();
 
     }
+
+    void CollidedWithShip()
+    {
+        Deactivate();
+
+        SplashParticle.Play();
+    } 
 }
