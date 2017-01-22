@@ -62,6 +62,11 @@ public class GameManager : MonoBehaviour
         MainMenuController.OnPostMainMenuClosed += PostStartGame;
     }
 
+    private void OnDestroy()
+    {
+        MainMenuController.OnPostMainMenuClosed -= PostStartGame;
+    }
+
     void Start()
     {
         CurGameState = GameState.MainMenu;
