@@ -1,0 +1,90 @@
+
+target_dummy.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dummy_a
+  rotate: false
+  xy: 598, 399
+  size: 253, 61
+  orig: 253, 61
+  offset: 0, 0
+  index: -1
+dummy_arm1_a
+  rotate: false
+  xy: 881, 329
+  size: 113, 131
+  orig: 113, 131
+  offset: 0, 0
+  index: -1
+dummy_arm2_a
+  rotate: true
+  xy: 881, 236
+  size: 91, 134
+  orig: 91, 134
+  offset: 0, 0
+  index: -1
+dummy_arm2_b
+  rotate: false
+  xy: 479, 178
+  size: 119, 173
+  orig: 119, 173
+  offset: 0, 0
+  index: -1
+dummy_b
+  rotate: false
+  xy: 250, 89
+  size: 42, 371
+  orig: 42, 371
+  offset: 0, 0
+  index: -1
+dummy_body_a
+  rotate: false
+  xy: 2, 2
+  size: 246, 458
+  orig: 246, 458
+  offset: 0, 0
+  index: -1
+dummy_body_b
+  rotate: true
+  xy: 294, 81
+  size: 84, 208
+  orig: 84, 208
+  offset: 0, 0
+  index: -1
+dummy_hair
+  rotate: true
+  xy: 764, 246
+  size: 151, 115
+  orig: 151, 115
+  offset: 0, 0
+  index: -1
+dummy_hands
+  rotate: false
+  xy: 600, 163
+  size: 142, 64
+  orig: 142, 64
+  offset: 0, 0
+  index: -1
+dummy_head
+  rotate: false
+  xy: 294, 167
+  size: 183, 184
+  orig: 183, 184
+  offset: 0, 0
+  index: -1
+dummy_mechanism_a
+  rotate: false
+  xy: 294, 353
+  size: 302, 107
+  orig: 302, 107
+  offset: 0, 0
+  index: -1
+dummy_target
+  rotate: false
+  xy: 600, 229
+  size: 162, 168
+  orig: 162, 168
+  offset: 0, 0
+  index: -1

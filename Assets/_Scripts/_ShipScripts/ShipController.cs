@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Spine.Unity;
+
 
 public enum DirectionEnum
 {
@@ -14,6 +16,9 @@ public class ShipController : MonoBehaviour
 
     public static ShipController Instance { get { return _instance; } }
 
+    public SkeletonAnimation DummyLeft;
+    public SkeletonAnimation DummyRight;
+
     public Rigidbody Rigidbody;
     public float MaxZSpeed;
 
@@ -26,6 +31,10 @@ public class ShipController : MonoBehaviour
     Vector3 _pushForceDirection = new Vector3(1, 0, 0);
 
     IEnumerator _checkInputRoutine;
+
+    const string IDLE_ANIM_NAME = "idle";
+    const string PULL_LEFT_ANIM_NAME = "pull_left";
+    const string PULL_RIGHT_ANIM_NAME = "pull_right";
 
     private void Awake()
     {
@@ -120,6 +129,8 @@ public class ShipController : MonoBehaviour
         _pushForceDirection.x = x;
 
         Rigidbody.AddForceAtPosition(_pushForceDirection * PushForce, targetTR.position, ForceMode.Acceleration);
+
+        PlayPushAnim(direction);
     }
     
     void LimitZSpeed()
@@ -151,5 +162,19 @@ public class ShipController : MonoBehaviour
             rot.z = -MaxZRot;
 
         transform.localEulerAngles = rot;
+    }
+
+    void PlayPushAnim(DirectionEnum pushDirection)
+    {
+        if (pushDirection == DirectionEnum.Left)
+        {
+            DummyLeft.state.SetAnimation(0, PULL_LEFT_ANIM_NAME, false);
+            DummyLeft.state.AddAnimation(0, IDLE_ANIM_NAME, true,0);
+        }
+        else
+        {
+            DummyRight.state.SetAnimation(0, PULL_LEFT_ANIM_NAME, false);
+            DummyRight.state.AddAnimation(0, IDLE_ANIM_NAME, true, 0);
+        }
     }
 }
