@@ -7,7 +7,7 @@ public class UIGameOver : MonoBehaviour
     public static Action OnPostGameOverClosed, OnPreGameOverClosed, OnPostGameOverOpened, OnPreGameOverOpened;
 
     public MMTweenAlpha UIFadeTween;
-    public GameObject GameOverUI;
+    public GameObject GameOverUI, GameOverSprite, LevelCompleteSprite;
     public Button RestartButton;
 
     public static UIGameOver Instance { get; private set; }
@@ -73,6 +73,18 @@ public class UIGameOver : MonoBehaviour
 
     void OpenGameOver()
     {
+        switch(GameManager.Instance.CurGameState)
+        {
+            case GameState.GameOver:
+                GameOverSprite.gameObject.SetActive(true);
+                LevelCompleteSprite.gameObject.SetActive(false);
+                break;
+            case GameState.LevelCompleted:
+                LevelCompleteSprite.gameObject.SetActive(true);
+                GameOverSprite.gameObject.SetActive(false);
+                break;
+        }
+
         FireOnPreGameOverOpened();
 
         GameOverUI.gameObject.SetActive(true);

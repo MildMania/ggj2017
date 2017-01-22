@@ -7,7 +7,7 @@ public class MainMenuController : MonoBehaviour
     public static Action OnPostMainMenuClosed, OnPreMainMenuClosed, OnPostMainMenuOpened, OnPreMainMenuOpened;
 
     public MMTweenAlpha UIFadeTween;
-    public GameObject MainMenuUI;
+    public GameObject MainMenuUI, TitleObj;
     public Button PlayButton;
 
     public static MainMenuController Instance { get; private set; }
@@ -77,6 +77,7 @@ public class MainMenuController : MonoBehaviour
 
         MainMenuUI.gameObject.SetActive(true);
         PlayButton.gameObject.SetActive(true);
+        TitleObj.gameObject.SetActive(true);
 
         FireOnPostMainMenuOpened();
         //CameraEffects.OnBlurOpened += OnBlurOpened;
@@ -93,6 +94,7 @@ public class MainMenuController : MonoBehaviour
         FireOnPostMainMenuClosed();
 
         PlayButton.gameObject.SetActive(false);
+        TitleObj.gameObject.SetActive(false);
 
         if (MainMenuUI.gameObject.activeSelf)
             UIFadeTween.AddOnFinish(() => MainMenuUI.gameObject.SetActive(false), false).PlayReverse();
